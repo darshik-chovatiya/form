@@ -4,10 +4,36 @@ cancel.textContent = "Cancel";
 cancel.style.display = "none";
 cancel.className = "btn btn-primary ms-2";
 submit.parentNode.appendChild(cancel);
-
-let users = [];
 let editId = null;
 let idCounter = 1;
+
+let users = [
+    { fname: 'Darshik', lname: 'Chovatiya', degree: 'B.sc IT', gender: 'Male', hobbies: ["Bowling"] }
+];
+
+function static() {
+    let tbody = document.getElementById("tbody");
+    tbody.innerHTML = "";
+
+    users.forEach(user => {
+        let newRow = tbody.insertRow();
+        newRow.setAttribute("data-id", user.id);
+
+        newRow.innerHTML = `<td>${user.fname}</td>
+                            <td>${user.lname}</td>
+                            <td>${user.degree}</td>
+                            <td>${user.gender}</td>
+                            <td>${user.hobbies.join(", ")}</td>
+                            <td>
+                                <button onclick="removes(this)" class="btn btn-danger">DELETE</button>
+                                <button onclick="edit(this)" class="btn btn-success">EDIT</button>
+                            </td>`;
+    });
+}
+
+static();
+
+
 
 submit.addEventListener("click", (e) => {
     e.preventDefault();
@@ -38,7 +64,7 @@ submit.addEventListener("click", (e) => {
             row.cells[4].textContent = hobbies.join(", ");
         }
         editId = null;
-        submit.textContent = "Submit";
+
         cancel.style.display = "none";
     } else {
         let userId = idCounter++;
@@ -63,6 +89,7 @@ submit.addEventListener("click", (e) => {
 });
 
 function edit(button) {
+
     let row = button.parentNode.parentNode;
     editId = parseInt(row.getAttribute("data-id"));
     let cells = row.getElementsByTagName("td");
@@ -79,6 +106,8 @@ function edit(button) {
         checkbox.checked = hobbiesArray.includes(checkbox.value);
     });
     submit.textContent = "Update";
+    console.log('submit data', submit);
+    submit.textContent = "Submit";
     cancel.style.display = "inline-block";
 }
 
